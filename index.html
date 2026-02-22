@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gorilla PSA Houston — Fix Traffic With a Simple Idea</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --yellow: #FFD60A;
+    --black: #111111;
+    --offwhite: #F5F0E8;
+    --orange: #FF6B2B;
+    --red: #E63946;
+    --blue: #1D3557;
+    --green: #2A9D8F;
+    --gray: #6B7280;
+    --light-gray: #E5E0D8;
+    --font-display: 'Archivo Black', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-body: 'Libre Franklin', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--offwhite); color: var(--black);
+    font-family: var(--font-body); line-height: 1.6; overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--black); border-bottom: 4px solid var(--yellow);
+    padding: 0 1.5rem; display: flex; align-items: center;
+    justify-content: space-between; height: 56px; transition: box-shadow 0.3s;
+  }
+  nav .logo {
+    font-family: var(--font-mono); color: rgba(245,240,232,0.6);
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  nav .nav-links { display: flex; gap: 0.25rem; }
+  nav .nav-links a {
+    color: var(--offwhite); text-decoration: none;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 0.4rem 0.65rem; border-radius: 3px;
+    transition: background 0.2s, color 0.2s;
+  }
+  nav .nav-links a:hover { background: var(--yellow); color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; padding: 80px 1.5rem 3rem;
+    position: relative; overflow: hidden; background: var(--black);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(255,214,10,0.04) 60px, rgba(255,214,10,0.04) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,214,10,0.04) 60px, rgba(255,214,10,0.04) 61px);
+  }
+  .road-stripe {
+    position: absolute; width: 6px; height: 40px;
+    background: var(--yellow); opacity: 0.12;
+    animation: roadScroll 4s linear infinite;
+  }
+  .road-stripe:nth-child(1) { left: 8%; animation-delay: 0s; }
+  .road-stripe:nth-child(2) { left: 22%; animation-delay: -1.2s; }
+  .road-stripe:nth-child(3) { left: 55%; animation-delay: -0.6s; }
+  .road-stripe:nth-child(4) { left: 78%; animation-delay: -2s; }
+  .road-stripe:nth-child(5) { left: 92%; animation-delay: -3s; }
+  @keyframes roadScroll {
+    0% { top: -50px; opacity: 0; } 10% { opacity: 0.12; }
+    90% { opacity: 0.12; } 100% { top: 110vh; opacity: 0; }
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 860px; margin: 0 auto; width: 100%;
+  }
+  .hero-badge {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--black); background: var(--offwhite);
+    padding: 0.3rem 0.85rem; margin-bottom: 1.25rem;
+    animation: fadeSlideUp 0.6s ease-out both;
+  }
+  .hero-brand {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    color: var(--yellow); text-transform: uppercase;
+    line-height: 1; margin-bottom: 0.5rem;
+    animation: fadeSlideUp 0.6s ease-out 0.1s both;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    line-height: 0.95; color: var(--offwhite);
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    animation: fadeSlideUp 0.6s ease-out 0.2s both;
+  }
+  .hero h1 .accent { color: var(--yellow); display: block; }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: rgba(245,240,232,0.7); max-width: 580px;
+    line-height: 1.7; margin-bottom: 2.5rem;
+    animation: fadeSlideUp 0.6s ease-out 0.35s both;
+  }
+  .hero-sub strong {
+    color: var(--yellow);
+    font-weight: 700;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeSlideUp 0.6s ease-out 0.5s both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--yellow); color: var(--black);
+    font-family: var(--font-display); font-size: 1rem;
+    text-transform: uppercase; text-decoration: none;
+    padding: 1rem 2rem; border: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(255,214,10,0.4); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent; color: var(--offwhite);
+    font-family: var(--font-mono); font-size: 0.85rem;
+    text-transform: uppercase; text-decoration: none;
+    padding: 1rem 1.5rem; border: 2px solid rgba(245,240,232,0.3);
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--yellow); color: var(--yellow); }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 1.5rem; }
+  .container { max-width: 860px; margin: 0 auto; }
+  section[id] { scroll-margin-top: 60px; }
+  .section-label {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--gray); margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    text-transform: uppercase; line-height: 1.05; margin-bottom: 1.5rem;
+  }
+
+  /* THE PROBLEM */
+  #the-problem { background: var(--black); color: var(--offwhite); }
+  #the-problem .section-label { color: rgba(245,240,232,0.4); }
+  #the-problem .section-title { color: var(--offwhite); }
+  #the-problem .section-intro {
+    color: rgba(245,240,232,0.6); font-size: 1.05rem;
+    line-height: 1.8; max-width: 620px; margin-bottom: 2.5rem;
+  }
+  .problem-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem; margin-bottom: 2.5rem;
+  }
+  .problem-stat { border-top: 3px solid var(--yellow); padding-top: 1rem; }
+  .problem-stat .ps-number {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--yellow); line-height: 1;
+  }
+  .problem-stat .ps-label {
+    font-size: 0.9rem; color: rgba(245,240,232,0.6);
+    margin-top: 0.5rem; line-height: 1.5;
+  }
+  .katy-callout {
+    background: rgba(255,214,10,0.08); border-left: 4px solid var(--yellow);
+    padding: 1.5rem 2rem; margin-bottom: 2rem;
+  }
+  .katy-callout .katy-title {
+    font-family: var(--font-display); font-size: 1rem;
+    text-transform: uppercase; color: var(--yellow); margin-bottom: 0.5rem;
+  }
+  .katy-callout p { color: rgba(245,240,232,0.65); font-size: 0.95rem; line-height: 1.7; }
+  .problem-pivot { background: var(--yellow); color: var(--black); padding: 1.75rem 2rem; }
+
+  /* Worst Roads Ranking */
+  .worst-roads {
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(245,240,232,0.15);
+    overflow: hidden;
+  }
+  .wr-header {
+    background: rgba(245,240,232,0.08);
+    padding: 0.85rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.75rem;
+  }
+  .wr-title {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--offwhite);
+    display: block;
+  }
+  .wr-source {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(245,240,232,0.3);
+    display: block;
+    margin-top: 0.2rem;
+  }
+  /* Toggle */
+  .wr-toggle {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: none; border: 1px solid rgba(245,240,232,0.2);
+    padding: 0.45rem 0.85rem;
+    cursor: pointer; border-radius: 4px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .wr-toggle:hover { border-color: var(--green); background: rgba(42,157,143,0.08); }
+  .wr-toggle-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(245,240,232,0.5);
+    transition: color 0.3s;
+  }
+  .wr-toggle-track {
+    width: 32px; height: 18px;
+    background: rgba(245,240,232,0.15);
+    border-radius: 9px;
+    position: relative;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .wr-toggle-thumb {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 14px; height: 14px;
+    background: rgba(245,240,232,0.5);
+    border-radius: 50%;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .wr-toggle.active { border-color: var(--green); background: rgba(42,157,143,0.1); }
+  .wr-toggle.active .wr-toggle-label { color: var(--green); }
+  .wr-toggle.active .wr-toggle-track { background: var(--green); }
+  .wr-toggle.active .wr-toggle-thumb { transform: translateX(14px); background: white; }
+  /* Zipper mode row styles */
+  .worst-roads.zipper-mode .wr-delay { color: var(--green); }
+  .worst-roads.zipper-mode .wr-row { background: rgba(42,157,143,0.06); }
+  .worst-roads.zipper-mode .wr-rank1 { background: rgba(42,157,143,0.1); }
+  .wr-saved {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 0.15rem;
+  }
+  .worst-roads.zipper-mode .wr-saved { display: block; }
+  .wr-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 90px;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    border-top: 1px solid rgba(245,240,232,0.08);
+    transition: background 0.2s;
+  }
+  .wr-row:hover { background: rgba(245,240,232,0.04); }
+  .wr-rank1 { background: rgba(255,214,10,0.08); }
+  .wr-rank1:hover { background: rgba(255,214,10,0.12); }
+  .wr-rank {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--yellow);
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .wr-rank span {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: rgba(245,240,232,0.35);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-top: 0.15rem;
+  }
+  .wr-name {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--offwhite);
+  }
+  .wr-segment {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.4);
+    margin-top: 0.1rem;
+  }
+  .wr-delay {
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--red);
+    line-height: 1;
+  }
+  .wr-delay-num {
+    font-family: var(--font-display);
+    font-size: inherit;
+    color: inherit;
+    transition: opacity 0.15s;
+  }
+  .wr-delay span:not(.wr-delay-num):not(.wr-saved) {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    font-weight: 400;
+    color: rgba(245,240,232,0.35);
+    letter-spacing: 0.05em;
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+  }
+  .wr-footnote {
+    padding: 0.65rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.03em;
+    border-top: 1px solid rgba(245,240,232,0.08);
+    line-height: 1.5;
+  }
+  .problem-pivot p {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    text-transform: uppercase; line-height: 1.35;
+  }
+  .problem-pivot .sub {
+    font-family: var(--font-body); font-size: 0.95rem;
+    text-transform: none; font-weight: 400; margin-top: 0.5rem; opacity: 0.7;
+  }
+
+  /* ============ SIDE-BY-SIDE ANIMATION ============ */
+  #what-is-it { background: var(--offwhite); padding-bottom: 3rem; }
+  #what-is-it .explainer {
+    font-size: 1.1rem; line-height: 1.9;
+    max-width: 640px; margin-bottom: 2.5rem; color: #333;
+  }
+
+  .sim-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .sim-panel {
+    position: relative;
+    border: 3px solid var(--light-gray);
+    background: white;
+    overflow: hidden;
+  }
+  .sim-panel.bad { border-color: var(--red); }
+  .sim-panel.good { border-color: var(--green); }
+
+  .sim-header {
+    padding: 0.85rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .sim-panel.bad .sim-header { background: var(--red); color: white; }
+  .sim-panel.good .sim-header { background: var(--green); color: white; }
+
+  .sim-header .sim-verdict {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+  }
+
+  .sim-road {
+    position: relative;
+    height: 340px;
+    background: #3a3a3a;
+    overflow: hidden;
+  }
+
+  /* Road markings */
+  .sim-road::before {
+    content: '';
+    position: absolute;
+    left: 50%; top: 0;
+    width: 3px;
+    height: 55%;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.5) 0px,
+      rgba(255,255,255,0.5) 12px,
+      transparent 12px,
+      transparent 24px
+    );
+  }
+
+  /* Merge funnel */
+  .sim-funnel {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 45%;
+  }
+  .sim-funnel::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to bottom left, #3a3a3a 0%, #3a3a3a 40%, #6b6b6b 40.5%, #6b6b6b 41.5%, transparent 42%);
+  }
+  /* Curb / barrier on right */
+  .sim-curb {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 153px 50%;
+    border-color: transparent transparent var(--offwhite) transparent;
+    z-index: 2;
+  }
+
+  /* Merge point marker */
+  .sim-merge-marker {
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--yellow);
+    background: rgba(0,0,0,0.7);
+    padding: 0.2rem 0.5rem;
+    white-space: nowrap;
+  }
+
+  /* Cars */
+  .car {
+    position: absolute;
+    width: 24px;
+    height: 38px;
+    border-radius: 5px 5px 3px 3px;
+    z-index: 3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .car::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 4px; right: 4px; height: 8px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+  }
+  .car.blue { background: #4A90D9; }
+  .car.orange { background: var(--orange); }
+  .car.teal { background: var(--green); }
+  .car.purple { background: #8B5CF6; }
+  .car.pink { background: #EC4899; }
+  .car.yellow { background: #F59E0B; }
+
+  /* ---- EARLY MERGE CARS ---- */
+  /* Right lane (merging lane) - mostly empty near merge, cars moved left early */
+  /* Left lane - packed with backed up cars */
+
+  /* Backed up left lane - long queue */
+  .bad-panel .car-b1 { left: 22%; top: 2%; animation: earlyCreep 8s linear infinite; }
+  .bad-panel .car-b2 { left: 22%; top: 14%; animation: earlyCreep 8s linear infinite 0.4s; }
+  .bad-panel .car-b3 { left: 22%; top: 26%; animation: earlyCreep 8s linear infinite 0.8s; }
+  .bad-panel .car-b4 { left: 22%; top: 38%; animation: earlyCreep 8s linear infinite 1.2s; }
+  .bad-panel .car-b5 { left: 22%; top: 50%; animation: earlyCreep 8s linear infinite 1.6s; }
+  .bad-panel .car-b6 { left: 25%; top: 62%; animation: earlyDrain 8s linear infinite 2s; }
+  .bad-panel .car-b7 { left: 28%; top: 74%; animation: earlyDrain 8s linear infinite 2.4s; }
+
+  /* Right lane - a couple of "late" cars getting blocked/angry */
+  .bad-panel .car-r1 { left: 60%; top: 8%; animation: earlyRightStuck 8s ease-in-out infinite; }
+  .bad-panel .car-r2 { left: 60%; top: 22%; animation: earlyRightForce 8s ease-in-out infinite 1s; }
+
+  @keyframes earlyCreep {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes earlyDrain {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(12px); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes earlyRightStuck {
+    0% { transform: translate(0, 0); }
+    30% { transform: translate(0, 4px); }
+    50% { transform: translate(-20px, 10px); }
+    70% { transform: translate(-20px, 10px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes earlyRightForce {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(0, 8px); }
+    40% { transform: translate(-24px, 16px); }
+    60% { transform: translate(-24px, 16px); }
+    100% { transform: translate(0, 0); }
+  }
+
+  /* ---- ZIPPER MERGE CARS ---- */
+  /* Both lanes evenly filled, alternating at merge */
+  .good-panel .car-l1 { left: 22%; top: 8%; animation: zipLeft 6s linear infinite; }
+  .good-panel .car-l2 { left: 22%; top: 30%; animation: zipLeft 6s linear infinite 1s; }
+  .good-panel .car-l3 { left: 22%; top: 52%; animation: zipMergeLeft 6s linear infinite 2s; }
+
+  .good-panel .car-r1 { left: 60%; top: 19%; animation: zipRight 6s linear infinite 0.5s; }
+  .good-panel .car-r2 { left: 60%; top: 41%; animation: zipRight 6s linear infinite 1.5s; }
+  .good-panel .car-r3 { left: 55%; top: 63%; animation: zipMergeRight 6s linear infinite 2.5s; }
+
+  /* Merged cars exiting bottom */
+  .good-panel .car-m1 { left: 30%; top: 80%; animation: zipExit 6s linear infinite 3s; }
+
+  @keyframes zipLeft {
+    0% { transform: translateY(-10px); opacity: 0; }
+    10% { opacity: 1; }
+    80% { transform: translateY(30px); opacity: 1; }
+    100% { transform: translateY(40px); opacity: 0.5; }
+  }
+  @keyframes zipRight {
+    0% { transform: translateY(-10px); opacity: 0; }
+    10% { opacity: 1; }
+    80% { transform: translate(-8px, 30px); opacity: 1; }
+    100% { transform: translate(-12px, 40px); opacity: 0.5; }
+  }
+  @keyframes zipMergeLeft {
+    0% { transform: translateY(0); opacity: 0.8; }
+    50% { transform: translate(4px, 20px); opacity: 1; }
+    100% { transform: translate(6px, 40px); opacity: 0; }
+  }
+  @keyframes zipMergeRight {
+    0% { transform: translate(0, 0); opacity: 0.8; }
+    50% { transform: translate(-18px, 20px); opacity: 1; }
+    100% { transform: translate(-22px, 40px); opacity: 0; }
+  }
+  @keyframes zipExit {
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(40px); opacity: 0; }
+  }
+
+  /* Backup indicators */
+  .backup-indicator {
+    position: absolute;
+    right: 6px;
+    top: 8px; bottom: 46%;
+    width: 4px;
+    z-index: 10;
+    border-radius: 2px;
+  }
+  .bad-panel .backup-indicator {
+    background: linear-gradient(to bottom, var(--red), var(--red));
+    opacity: 0.8;
+    animation: backupPulseBad 2s ease-in-out infinite;
+  }
+  .good-panel .backup-indicator {
+    bottom: 66%;
+    background: linear-gradient(to bottom, var(--green), var(--green));
+    opacity: 0.6;
+    animation: backupPulseGood 2s ease-in-out infinite;
+  }
+  @keyframes backupPulseBad {
+    0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; }
+  }
+  @keyframes backupPulseGood {
+    0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; }
+  }
+
+  .backup-label {
+    position: absolute;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    z-index: 10;
+    padding: 0.2rem;
+    border-radius: 2px;
+  }
+  .bad-panel .backup-label {
+    top: 8px;
+    color: white;
+    background: var(--red);
+  }
+  .good-panel .backup-label {
+    top: 8px;
+    color: white;
+    background: var(--green);
+  }
+
+  /* Stats row below sim */
+  .sim-stats {
+    padding: 0.85rem 1rem;
+    background: var(--offwhite);
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .sim-stat {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray);
+  }
+  .sim-stat strong {
+    color: var(--black);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+  .sim-panel.bad .sim-stat strong { color: var(--red); }
+  .sim-panel.good .sim-stat strong { color: var(--green); }
+
+  /* Evidence CTA */
+  .btn-evidence {
+    display: inline-block;
+    background: var(--black);
+    color: var(--yellow);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    border: 3px solid var(--black);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+  }
+  .btn-evidence:hover {
+    background: var(--yellow);
+    color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255,214,10,0.2);
+  }
+
+  /* SCRIPT */
+  /* GORILLA PSA */
+  #gorilla-psa { background: var(--black); color: var(--offwhite); }
+  #gorilla-psa .section-label { color: rgba(245,240,232,0.4); }
+  #gorilla-psa .section-title { color: var(--offwhite); }
+  .gorilla-intro {
+    font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.7;
+    color: rgba(245,240,232,0.7); max-width: 720px; margin-bottom: 1.25rem;
+  }
+  .gorilla-intro strong { color: var(--yellow); font-weight: 700; }
+  .gorilla-pillars {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    margin: 2.5rem 0 2rem;
+  }
+  .gorilla-pillar {
+    border-top: 3px solid var(--yellow); padding-top: 1.25rem;
+  }
+  .gp-number {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    color: var(--yellow); letter-spacing: 0.1em; margin-bottom: 0.5rem;
+  }
+  .gorilla-pillar h3 {
+    font-family: var(--font-display); font-size: 1rem;
+    text-transform: uppercase; color: var(--offwhite); margin-bottom: 0.5rem;
+  }
+  .gorilla-pillar p {
+    font-size: 0.9rem; line-height: 1.6; color: rgba(245,240,232,0.6);
+  }
+  .gorilla-kicker {
+    font-family: var(--font-body); font-size: clamp(1rem, 2vw, 1.1rem);
+    color: rgba(245,240,232,0.5); font-style: italic; max-width: 620px;
+  }
+  @media (max-width: 700px) {
+    .gorilla-pillars { grid-template-columns: 1fr; }
+  }
+
+  #script { background: var(--yellow); position: relative; overflow: hidden; }  #script::before {
+    content: '"'; position: absolute;
+    font-family: var(--font-display); font-size: 30rem;
+    color: rgba(0,0,0,0.05); top: -5rem; right: -2rem;
+    line-height: 1; pointer-events: none;
+  }
+  #script .section-label { color: rgba(0,0,0,0.5); }
+  .script-intro {
+    color: rgba(0,0,0,0.65); font-size: 1rem;
+    max-width: 580px; line-height: 1.7; margin-bottom: 2rem;
+  }
+  .script-card {
+    background: var(--offwhite); padding: 2.5rem;
+    border: 3px solid var(--black); box-shadow: 8px 8px 0 var(--black);
+    position: relative;
+  }
+  .script-card::before {
+    content: 'YOUR TALKING POINTS'; position: absolute;
+    top: -14px; left: 1.5rem; background: var(--black);
+    color: var(--yellow); font-family: var(--font-mono);
+    font-size: 0.7rem; letter-spacing: 0.15em; padding: 0.25rem 0.75rem;
+  }
+  .script-text {
+    font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+    line-height: 1.9; color: var(--black);
+  }
+  .script-text .highlight { background: var(--yellow); padding: 0.1em 0.3em; font-weight: 600; }
+  .script-meta {
+    margin-top: 1.5rem; padding-top: 1.5rem;
+    border-top: 2px dashed var(--light-gray);
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .script-meta-item {
+    font-family: var(--font-mono); font-size: 0.75rem;
+    color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .script-meta-item strong {
+    color: var(--black); display: block; font-family: var(--font-body);
+    font-size: 0.9rem; text-transform: none; letter-spacing: 0; margin-top: 0.15rem;
+  }
+  /* Action grid */
+  .action-grid {
+    margin-top: 2.5rem; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 1.25rem;
+  }
+  .action-card {
+    background: rgba(0,0,0,0.06); padding: 1.75rem;
+    border: 2px solid transparent;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .action-card:hover { border-color: var(--black); transform: translateY(-2px); }
+  .action-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+  .action-card h3 {
+    font-family: var(--font-display); font-size: 0.95rem;
+    text-transform: uppercase; margin-bottom: 0.65rem; line-height: 1.2;
+  }
+  .action-card p { font-size: 0.9rem; color: rgba(0,0,0,0.55); line-height: 1.65; }
+  .action-radio { border-left: 4px solid var(--black); }
+  .action-link {
+    display: inline-block; margin-top: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--black); text-decoration: none;
+    padding: 0.4rem 0.85rem; border: 2px solid var(--black);
+    transition: background 0.2s, color 0.2s;
+  }
+  .action-link:hover { background: var(--black); color: var(--yellow); }  .action-copy-btn {
+    display: inline-block; margin-top: 0.75rem;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--black); background: transparent;
+    padding: 0.4rem 0.85rem; border: 2px solid var(--black);
+    cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  .action-copy-btn:hover { background: var(--black); color: var(--yellow); }
+  .action-copy-btn.copied {
+    background: var(--green); color: white; border-color: var(--green);
+  }
+
+  /* RADIO STATIONS */
+  #stations { background: var(--black); color: var(--offwhite); }
+  #stations .section-label { color: rgba(245,240,232,0.4); }
+  #stations .section-title { color: var(--offwhite); }
+  .stations-intro {
+    color: rgba(245,240,232,0.6); font-size: 0.95rem;
+    max-width: 580px; line-height: 1.7; margin-bottom: 2rem;
+  }
+  .station-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  .station-card {
+    background: rgba(245,240,232,0.05);
+    border: 1px solid rgba(245,240,232,0.12);
+    padding: 1.5rem; display: grid; grid-template-columns: 80px 1fr;
+    gap: 1.25rem; align-items: start; transition: border-color 0.3s;
+  }
+  .station-card:hover { border-color: var(--yellow); }
+  .station-freq {
+    font-family: var(--font-display); font-size: 1.5rem;
+    color: var(--yellow); line-height: 1; text-align: center;
+  }
+  .station-freq .band {
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: rgba(245,240,232,0.4); display: block;
+    margin-top: 0.25rem; letter-spacing: 0.1em;
+  }
+  .station-info h3 {
+    font-family: var(--font-display); font-size: 0.95rem;
+    text-transform: uppercase; color: var(--offwhite); margin-bottom: 0.25rem;
+  }
+  .station-info .station-show {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--yellow); text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 0.4rem;
+  }
+  .station-info p { font-size: 0.88rem; color: rgba(245,240,232,0.5); line-height: 1.6; }
+  .station-tag {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem; border: 1px solid rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.5); margin-top: 0.5rem; margin-right: 0.3rem;
+  }
+  .station-tag.recommended { border-color: var(--green); color: var(--green); }
+  .station-phone {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-family: var(--font-mono); font-size: 0.75rem;
+    letter-spacing: 0.03em; color: var(--yellow);
+    background: rgba(255,214,10,0.1); border: 1px solid rgba(255,214,10,0.3);
+    padding: 0.35rem 0.75rem; margin-top: 0.6rem; margin-bottom: 0.4rem;
+    cursor: pointer; transition: all 0.2s; display: block;
+  }
+  .station-phone:hover {
+    background: var(--yellow); color: var(--black);
+    border-color: var(--yellow);
+  }
+  .station-phone.copied {
+    background: var(--green); color: white;
+    border-color: var(--green);
+  }
+  .stations-note {
+    margin-top: 2rem; padding: 1.25rem;
+    background: rgba(255,214,10,0.08); border-left: 3px solid var(--yellow);
+  }
+  .stations-note p { font-size: 0.88rem; color: rgba(245,240,232,0.55); line-height: 1.6; }
+  .stations-note strong { color: var(--yellow); }
+
+  /* EVIDENCE */
+  #evidence { background: var(--offwhite); }
+  .evidence-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem; }
+  .evidence-card {
+    background: white; border: 2px solid var(--light-gray);
+    padding: 2rem; transition: border-color 0.3s, transform 0.2s;
+  }
+  .evidence-card:hover { border-color: var(--black); transform: translateY(-2px); }
+  .evidence-card .ev-number {
+    font-family: var(--font-display); font-size: 2.5rem;
+    color: var(--yellow); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .evidence-card .ev-claim {
+    font-family: var(--font-display); font-size: 1.15rem;
+    text-transform: uppercase; line-height: 1.2; margin-bottom: 0.75rem;
+  }
+  .evidence-card .ev-detail { font-size: 0.95rem; color: var(--gray); line-height: 1.7; }
+  .evidence-card .ev-source {
+    margin-top: 1rem; font-family: var(--font-mono);
+    font-size: 0.7rem; color: rgba(0,0,0,0.35);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .evidence-featured { background: var(--blue); color: var(--offwhite); border-color: var(--blue); }
+  .evidence-featured:hover { border-color: var(--yellow); }
+  .evidence-featured .ev-number { color: var(--yellow); }
+  .evidence-featured .ev-detail { color: rgba(245,240,232,0.6); }
+  .evidence-featured .ev-source { color: rgba(245,240,232,0.3); }
+  .evidence-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .endorsement-strip {
+    margin-top: 2.5rem; padding: 2rem;
+    background: var(--black); color: var(--offwhite);
+  }
+  .endorsement-strip .es-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.4); margin-bottom: 1rem;
+  }
+  .endorsement-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .endorsement-tag {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 0.35rem 0.75rem; border: 1px solid rgba(245,240,232,0.2);
+    color: rgba(245,240,232,0.75);
+  }
+
+  /* PARTICIPATE */
+  #participate { background: var(--offwhite); }
+  .steps { margin-top: 2.5rem; display: grid; gap: 0; }
+  .step {
+    display: grid; grid-template-columns: 80px 1fr;
+    border-bottom: 2px solid var(--light-gray); padding: 2rem 0;
+  }
+  .step:first-child { border-top: 2px solid var(--light-gray); }
+  .step-number {
+    font-family: var(--font-display); font-size: 2.5rem;
+    color: var(--yellow); line-height: 1; text-align: center; padding-top: 0.15rem;
+  }
+  .step-content h3 {
+    font-family: var(--font-display); font-size: 1.1rem;
+    text-transform: uppercase; margin-bottom: 0.5rem;
+  }
+  .step-content p { font-size: 0.95rem; color: var(--gray); line-height: 1.7; }
+  .spread-channels {
+    margin-top: 3rem; background: white;
+    border: 2px solid var(--light-gray); padding: 2rem;
+  }
+  .spread-channels h3 {
+    font-family: var(--font-display); font-size: 1rem;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .channel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem;
+  }
+  .channel { padding: 1rem 0.75rem; background: var(--offwhite); text-align: center; }
+  .channel-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+  .channel-name {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  /* TRACKER */
+  #tracker { background: var(--yellow); }
+  #tracker .section-label { color: rgba(0,0,0,0.4); }
+  .tracker-box {
+    background: var(--offwhite); border: 3px solid var(--black);
+    box-shadow: 8px 8px 0 var(--black); padding: 2.5rem; margin-top: 1.5rem;
+  }
+  .tracker-prompt {
+    font-family: var(--font-display); font-size: 1.3rem;
+    text-transform: uppercase; text-align: center; margin-bottom: 2rem;
+  }
+  .tracker-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .tracker-btn {
+    background: white; border: 2px solid var(--black);
+    padding: 1.25rem 1rem; text-align: center; cursor: pointer;
+    font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .tracker-btn:hover { background: var(--black); color: var(--yellow); transform: translateY(-2px); }  .tracker-btn .tb-icon { font-size: 1.3rem; display: block; margin-bottom: 0.4rem; }
+  .tracker-btn.clicked { background: var(--green); color: white; border-color: var(--green); pointer-events: none; }
+  .tracker-btn.clicked::after {
+    content: '✓ Logged!'; display: block;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    text-transform: uppercase; margin-top: 0.3rem; letter-spacing: 0.1em;
+  }
+  .tracker-counter { text-align: center; padding-top: 1.5rem; border-top: 2px dashed var(--light-gray); }
+  .tracker-counter .tc-number {
+    font-family: var(--font-display); font-size: 3rem;
+    color: var(--black); line-height: 1; transition: transform 0.2s;
+  }
+  .tracker-counter .tc-label {
+    font-family: var(--font-mono); font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--gray); margin-top: 0.3rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black); color: rgba(245,240,232,0.4);
+    padding: 3rem 1.5rem; text-align: center; border-top: 4px solid var(--yellow);
+  }
+  footer .footer-logo {
+    font-family: var(--font-display); font-size: 1.3rem;
+    color: var(--yellow); text-transform: uppercase; margin-bottom: 0.3rem;
+  }
+  footer .footer-tagline {
+    font-family: var(--font-mono); font-size: 0.8rem;
+    color: rgba(245,240,232,0.5); margin-bottom: 1rem;
+  }
+  footer p {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.05em; line-height: 1.8;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    nav .nav-links a { font-size: 0.6rem; padding: 0.3rem 0.4rem; }
+    .sim-wrapper { grid-template-columns: 1fr; gap: 1.5rem; }
+    .evidence-pair { grid-template-columns: 1fr; }
+    .step { grid-template-columns: 55px 1fr; }
+    .step-number { font-size: 2rem; }
+    .script-card { padding: 1.5rem; }
+    .action-grid { grid-template-columns: 1fr; }
+    .tracker-box { padding: 1.5rem; }
+    .station-card { grid-template-columns: 60px 1fr; gap: 1rem; }
+    .station-freq { font-size: 1.2rem; }
+    .wr-row { grid-template-columns: 70px 1fr 70px; padding: 0.75rem 1rem; }
+    .wr-name { font-size: 0.8rem; }
+    .wr-delay { font-size: 0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Fix Houston Traffic</div>
+  <div class="nav-links">
+    <a href="#the-problem">Problem</a>
+    <a href="#what-is-it">Solution</a>
+    <a href="#gorilla-psa">Gorilla PSA</a>
+    <a href="#script">Script</a>
+    <a href="#evidence">Evidence</a>
+    <a href="#participate">Join</a>
+    <a href="#tracker">Log It</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Gorilla PSA</div>
+    <div class="hero-brand">Fix Houston Traffic</div>
+    <h1>Tell someone about<span class="accent">the zipper merge.</span></h1>
+    <p class="hero-sub">
+      Houstonians lose <strong>nearly 4 full days</strong> a year sitting in traffic. But data shows if drivers learn one simple technique, we could cut backups by <strong>up to 50%</strong>. That's <strong>2 days of your life back</strong>, every single year.<br><br>All you have to do is spread the word.
+    </p>
+    <div class="hero-cta">
+      <a href="#what-is-it" class="btn-primary">Learn the Zipper Merge ↓</a>
+      <a href="#script" class="btn-secondary">Tell Someone About It</a>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section id="the-problem">
+  <div class="container">
+    <div class="section-label">01 — The Problem</div>
+    <div class="section-title">Houston has a traffic problem.<br>More lanes won't fix it.</div>
+    <p class="section-intro">Houston is one of the most car-dependent cities in America. Near-universal reliance on driving, limited transit, and traffic that keeps getting worse every year. The city's response has been to build more lanes&mdash;but the data tells a different story.</p>
+    <div class="problem-stats">
+      <div class="problem-stat">
+        <div class="ps-number">3.75 days</div>
+        <div class="ps-label">Lost per driver in rush-hour traffic in 2025&mdash;trending up year over year.</div>
+      </div>
+      <div class="problem-stat">
+        <div class="ps-number">7 of 10</div>
+        <div class="ps-label">Most congested corridors in all of Texas are in the Houston metro.</div>
+      </div>
+    </div>
+
+    <!-- Worst Roads Ranking -->
+    <div class="worst-roads" id="worstRoads">
+      <div class="wr-header">
+        <div>
+          <span class="wr-title">Houston's worst rush-hour corridors</span>
+          <span class="wr-source">Houston TranStar 2025 / TTI Texas Top 100</span>
+        </div>
+        <button class="wr-toggle" id="wrToggle" onclick="toggleZipper()">
+          <span class="wr-toggle-label" id="wrToggleLabel">With zipper merge</span>
+          <span class="wr-toggle-track" id="wrToggleTrack"><span class="wr-toggle-thumb"></span></span>
+        </button>
+      </div>
+      <div class="wr-row wr-rank1">
+        <div class="wr-rank">#1 in Texas<br><span>3 years running</span></div>
+        <div class="wr-name">I-610 West Loop <span class="wr-segment">I-10 to SW Freeway</span></div>
+        <div class="wr-delay"><span class="wr-delay-num" data-now="+25" data-zip="+13">+25</span> min<span>at rush hour</span><span class="wr-saved">↓ 12 min saved</span></div>
+      </div>
+      <div class="wr-row">
+        <div class="wr-rank">#2</div>
+        <div class="wr-name">I-69 / SW Freeway <span class="wr-segment">I-610 to Downtown</span></div>
+        <div class="wr-delay"><span class="wr-delay-num" data-now="+30" data-zip="+15">+30</span> min<span>at rush hour</span><span class="wr-saved">↓ 15 min saved</span></div>
+      </div>
+      <div class="wr-row">
+        <div class="wr-rank">#4</div>
+        <div class="wr-name">I-10 Katy Freeway <span class="wr-segment">Beltway 8 to Downtown</span></div>
+        <div class="wr-delay"><span class="wr-delay-num" data-now="+28" data-zip="+14">+28</span> min<span>at rush hour</span><span class="wr-saved">↓ 14 min saved</span></div>
+      </div>
+      <div class="wr-row">
+        <div class="wr-rank">#5</div>
+        <div class="wr-name">I-610 North Loop <span class="wr-segment">Gellhorn to Shepherd</span></div>
+        <div class="wr-delay"><span class="wr-delay-num" data-now="+20" data-zip="+10">+20</span> min<span>at rush hour</span><span class="wr-saved">↓ 10 min saved</span></div>
+      </div>
+      <div class="wr-row">
+        <div class="wr-rank">#6</div>
+        <div class="wr-name">I-45 North Freeway <span class="wr-segment">Beltway 8 to Downtown</span></div>
+        <div class="wr-delay"><span class="wr-delay-num" data-now="+25" data-zip="+13">+25</span> min<span>at rush hour</span><span class="wr-saved">↓ 12 min saved</span></div>
+      </div>
+      <div class="wr-footnote" id="wrFootnote">Rankings reflect statewide position in TTI's Texas Top 100 Congested Road Segments. Added minutes are estimated peak-hour delay vs. free-flow conditions.</div>
+    </div>
+    <div class="katy-callout">
+      <div class="katy-title">The Katy Freeway: a lesson in what doesn't work</div>
+      <p>Houston widened the Katy Freeway to as many as 26 lanes&mdash;one of the widest highways on Earth. Within a few years, rush-hour travel times were worse than before. A 10% increase in highway capacity leads to roughly a 10% increase in driving volume, wiping out any relief.</p>
+    </div>
+    <div class="problem-pivot">
+      <p>The solution isn't more concrete. It's smarter driving at the bottlenecks that already exist.</p>
+      <p class="sub">One technique, adopted widely, could make a measurable difference&mdash;without spending a dollar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS A ZIPPER MERGE -->
+<section id="what-is-it">
+  <div class="container">
+    <div class="section-label">02 — The Solution</div>
+    <div class="section-title">The zipper merge.<br>See the difference.</div>
+    <p class="explainer">When a lane is ending, you use <strong>both lanes all the way to the merge point</strong>, then take turns&mdash;one car from each lane, like the teeth of a zipper. Watch what happens compared to what most drivers do today.</p>
+
+    <!-- SIDE-BY-SIDE ANIMATION -->
+    <div class="sim-wrapper">
+
+      <!-- EARLY MERGE (BAD) -->
+      <div class="sim-panel bad bad-panel">
+        <div class="sim-header">
+          <span>❌ What most people do</span>
+          <span class="sim-verdict">Early merge</span>
+        </div>
+        <div class="sim-road">
+          <div class="backup-indicator"></div>
+          <div class="backup-label">Long backup</div>
+
+          <!-- Left lane - packed -->
+          <div class="car blue car-b1"></div>
+          <div class="car teal car-b2"></div>
+          <div class="car orange car-b3"></div>
+          <div class="car purple car-b4"></div>
+          <div class="car pink car-b5"></div>
+          <div class="car yellow car-b6"></div>
+          <div class="car blue car-b7"></div>
+
+          <!-- Right lane - sparse, forcing in -->
+          <div class="car orange car-r1"></div>
+          <div class="car purple car-r2"></div>
+
+          <div class="sim-curb"></div>
+          <div class="sim-merge-marker">▼ Merge point</div>
+        </div>
+        <div class="sim-stats">
+          <div class="sim-stat"><strong>1 lane used</strong>Long before merge</div>
+          <div class="sim-stat"><strong>Longer backup</strong>Up to 2× the length</div>
+          <div class="sim-stat"><strong>More conflict</strong>Blocking &amp; forcing</div>
+        </div>
+      </div>
+
+      <!-- ZIPPER MERGE (GOOD) -->
+      <div class="sim-panel good good-panel">
+        <div class="sim-header">
+          <span>✅ The zipper merge</span>
+          <span class="sim-verdict">Both lanes → take turns</span>
+        </div>
+        <div class="sim-road">
+          <div class="backup-indicator"></div>
+          <div class="backup-label">Short backup</div>
+
+          <!-- Left lane - evenly spaced -->
+          <div class="car blue car-l1"></div>
+          <div class="car orange car-l2"></div>
+          <div class="car pink car-l3"></div>
+
+          <!-- Right lane - evenly spaced -->
+          <div class="car teal car-r1"></div>
+          <div class="car purple car-r2"></div>
+          <div class="car yellow car-r3"></div>
+
+          <!-- Merged -->
+          <div class="car blue car-m1"></div>
+
+          <div class="sim-curb"></div>
+          <div class="sim-merge-marker">▼ Merge point</div>
+        </div>
+        <div class="sim-stats">
+          <div class="sim-stat"><strong>Both lanes used</strong>All the way to merge</div>
+          <div class="sim-stat"><strong>40–50% shorter</strong>Backup length</div>
+          <div class="sim-stat"><strong>Take turns</strong>Smooth &amp; predictable</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top: 1rem;">
+      <a href="#evidence" class="btn-evidence">Don't take our word for it — see the data ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- GORILLA PSA -->
+<section id="gorilla-psa">
+  <div class="container">
+    <div class="section-label">03 — What Is a Gorilla PSA?</div>
+    <div class="section-title">The city won't do this.<br>So we will.</div>
+    <p class="gorilla-intro">Every state DOT that has reduced congestion with the zipper merge did it through public education campaigns&mdash;signage, PSAs, media outreach. Houston hasn't done any of that. No signs. No campaigns. No education. The city keeps adding lanes and hoping for the best.</p>
+    <p class="gorilla-intro">A <strong>Gorilla PSA</strong> is citizens doing what their government won't. It's the education program that should already exist&mdash;run by regular people instead of institutions. You learn the zipper merge. You tell someone else. You call a radio station. You share this page. You do it again next week. That's it.</p>
+    <div class="gorilla-pillars">
+      <div class="gorilla-pillar">
+        <div class="gp-number">01</div>
+        <h3>No budget needed</h3>
+        <p>Governments spend millions on traffic campaigns. This costs nothing. Just people talking to people through channels that already exist.</p>
+      </div>
+      <div class="gorilla-pillar">
+        <div class="gp-number">02</div>
+        <h3>Collective action</h3>
+        <p>One person calling a radio station is a caller. Twenty people calling is a pattern. A hundred is a movement the city can't ignore.</p>
+      </div>
+      <div class="gorilla-pillar">
+        <div class="gp-number">03</div>
+        <h3>Citizen outreach</h3>
+        <p>Every conversation, every call-in, every share is someone doing the public education that Houston's transportation agencies have left on the table.</p>
+      </div>
+    </div>
+    <p class="gorilla-kicker">This is what grassroots looks like. No organization. No permission. Just Houstonians who got tired of waiting for someone else to fix it.</p>
+  </div>
+</section>
+
+<!-- SCRIPT -->
+<section id="script">
+  <div class="container">
+    <div class="section-label">04 — Spread the Word</div>
+    <div class="section-title">Spread the word.</div>
+    <p class="script-intro">The zipper merge works&mdash;but only if enough drivers do it. Right now, most Houstonians have never heard the phrase. That's the whole problem. <strong style="color:var(--black)">You knowing isn't enough. You have to tell people.</strong> Here's what to say.</p>
+    <div class="script-card">
+      <p class="script-text">"Hey, have you heard of the <span class="highlight">zipper merge</span>? When a lane is ending, you're supposed to use both lanes all the way to the merge point, then take turns&mdash;one car from each lane, like a zipper. Studies show it cuts backups by <span class="highlight">40 to 50 percent</span>. In Michigan they tried it and turned a 6-mile backup into 3 miles. AAA recommends it, DOTs across the country endorse it. We just gotta start doing it. <span class="highlight">Zipper merge</span>&mdash;look it up."</p>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-card action-radio">
+        <div class="action-icon">📻</div>
+        <h3>Call a radio station</h3>
+        <p>Call any Houston station&mdash;you don't need a call-in show. Ask the receptionist to pass along a traffic tip, or request they run a zipper merge PSA. If enough people call the same station, they'll notice.</p>
+        <a href="#stations" class="action-link">See station guide ↓</a>
+      </div>
+      <div class="action-card action-callin">
+        <div class="action-icon">🎙️</div>
+        <h3>Call in live</h3>
+        <p>When you hear "what's on your mind?" or "we're taking calls"&mdash;that's your window. Keep it under 30 seconds, sound like yourself, and tell the whole city about the zipper merge.</p>
+      </div>
+      <div class="action-card action-friend">
+        <div class="action-icon">🗣️</div>
+        <h3>Tell a friend</h3>
+        <p>Next time someone complains about Houston traffic&mdash;and they will&mdash;tell them about the zipper merge. At dinner, in the carpool, at work. Even "look up the zipper merge" plants the seed.</p>
+      </div>
+      <div class="action-card action-share">
+        <div class="action-icon">📲</div>
+        <h3>Share this page</h3>
+        <p>Post it to your socials, drop it in the group chat, send it to your Nextdoor. The more Houstonians who see this, the closer we get to it actually working.</p>
+        <button class="action-copy-btn" onclick="copyLink(this)">Copy link to share</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RADIO STATIONS -->
+<section id="stations">
+  <div class="container">
+    <div class="section-label">05 — Radio Stations</div>
+    <div class="section-title">Call a Houston radio station.</div>
+    <p class="stations-intro">Talk radio reaches thousands of drivers in their cars, stuck in traffic, at the exact moment this message is most relevant. Call in, ask the host to mention the zipper merge, or wait for your turn and say it yourself.</p>
+    <div class="station-grid">
+      <div class="station-card">
+        <div class="station-freq">88.7<span class="band">FM</span></div>
+        <div class="station-info">
+          <h3>Houston Public Media (NPR)</h3>
+          <div class="station-show">Hello Houston — Weekdays 11am–1pm</div>
+          <p>Daily two-hour talk show with Ernie Manouse covering local topics. Takes listener calls&mdash;traffic is a natural fit.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-748-8888')">📞 713-748-8888</button>
+          <span class="station-tag recommended">Great fit</span><span class="station-tag">Open call-in</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">88.7<span class="band">FM</span></div>
+        <div class="station-info">
+          <h3>Houston Public Media (NPR)</h3>
+          <div class="station-show">Houston Matters — Weekdays 9am</div>
+          <p>Deep dives into Houston issues&mdash;transportation, politics, culture. Has previously covered zipper merging.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-748-8888')">📞 713-748-8888</button>
+          <span class="station-tag recommended">Great fit</span><span class="station-tag">Houston-focused</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">90.1<span class="band">FM</span></div>
+        <div class="station-info">
+          <h3>KPFT — Community Radio</h3>
+          <div class="station-show">Multiple call-in shows</div>
+          <p>Listener-sponsored community station. Multiple talk and call-in programs. Perfect match for grassroots PSAs.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-526-5738')">📞 713-526-5738</button>
+          <span class="station-tag recommended">Great fit</span><span class="station-tag">Community radio</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">740<span class="band">AM</span></div>
+        <div class="station-info">
+          <h3>NewsRadio 740 KTRH</h3>
+          <div class="station-show">The Michael Berry Show + local programming</div>
+          <p>Houston's news/talk powerhouse. High commuter listenership and one of the highest-rated programs in the market.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-212-8000')">📞 713-212-8000</button>
+          <span class="station-tag">High reach</span><span class="station-tag">News/Talk</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">700<span class="band">AM</span></div>
+        <div class="station-info">
+          <h3>KSEV — The Voice of Texas</h3>
+          <div class="station-show">Multiple local talk shows</div>
+          <p>Conservative talk with locally-hosted shows that take calls. Traffic frustration crosses political lines.</p>
+          <button class="station-phone" onclick="copyPhone(this, '281-558-5738')">📞 281-558-5738</button>
+          <span class="station-tag">Local talk</span><span class="station-tag">Call-in</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">1070<span class="band">AM</span></div>
+        <div class="station-info">
+          <h3>AM 1070 The Answer</h3>
+          <div class="station-show">Impact Houston + local talk</div>
+          <p>Community-focused programming covering Houston issues. Solid fit for a local traffic PSA.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-260-3600')">📞 713-260-3600</button>
+          <span class="station-tag">Community shows</span>
+        </div>
+      </div>
+      <div class="station-card">
+        <div class="station-freq">610<span class="band">AM</span></div>
+        <div class="station-info">
+          <h3>SportsRadio 610</h3>
+          <div class="station-show">Local sports talk — open phone lines</div>
+          <p>Sports talk takes calls all day. Hosts often go off-topic. A well-timed traffic tip can land perfectly.</p>
+          <button class="station-phone" onclick="copyPhone(this, '713-572-4610')">📞 713-572-4610</button>
+          <span class="station-tag">Sports talk</span><span class="station-tag">High commuter reach</span>
+        </div>
+      </div>
+    </div>
+    <div class="stations-note">
+      <p><strong>Tip:</strong> You don't need to be a regular caller. Dial in, wait your turn, share the tip like you'd tell a friend. Under 30 seconds. Be friendly. Even if the host moves on, you just reached every listener in their car.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCE -->
+<section id="evidence">
+  <div class="container">
+    <div class="section-label">06 — The Evidence</div>
+    <div class="section-title">This isn't an opinion. It's data.</div>
+    <div class="evidence-grid">
+      <div class="evidence-card evidence-featured">
+        <div class="ev-number">40–50%</div>
+        <div class="ev-claim">Shorter traffic backups</div>
+        <div class="ev-detail">The most widely validated figure in zipper merge research. Confirmed by transportation departments in Minnesota, Missouri, Colorado, and multiple independent studies.</div>
+        <div class="ev-source">Sources: MnDOT, MoDOT, CDOT, FHWA</div>
+      </div>
+      <div class="evidence-pair">
+        <div class="evidence-card">
+          <div class="ev-number">6→3</div>
+          <div class="ev-claim">Miles of backup cut in half</div>
+          <div class="ev-detail">At a Michigan site, a 6-mile congestion zone was reduced to 3 miles. Drivers saved 15–25 minutes each.</div>
+          <div class="ev-source">Source: ITRE / NC State</div>
+        </div>
+        <div class="evidence-card">
+          <div class="ev-number">54%</div>
+          <div class="ev-claim">Travel time reduction on freeways</div>
+          <div class="ev-detail">Microsimulation found zipper merging cut freeway travel times by 54% and reduced queue length by 87%.</div>
+          <div class="ev-source">Source: SEH Inc.</div>
+        </div>
+      </div>
+      <div class="evidence-pair">
+        <div class="evidence-card">
+          <div class="ev-number">↓</div>
+          <div class="ev-claim">Fewer crashes &amp; less road rage</div>
+          <div class="ev-detail">Equalizing speeds between lanes reduces rear-end and sideswipe crash risk. Less aggressive driving observed in field evaluations.</div>
+          <div class="ev-source">Sources: MnDOT, NCDOT, Texas A&M TTI</div>
+        </div>
+        <div class="evidence-card">
+          <div class="ev-number">14 min</div>
+          <div class="ev-claim">Delayed onset of congestion</div>
+          <div class="ev-detail">Texas A&M TTI found zipper merging delayed congestion onset at a merge point by ~14 minutes.</div>
+          <div class="ev-source">Source: TTI</div>
+        </div>
+      </div>
+    </div>
+    <div class="endorsement-strip">
+      <div class="es-label">Endorsed &amp; promoted by</div>
+      <div class="endorsement-list">
+        <div class="endorsement-tag">AAA</div>
+        <div class="endorsement-tag">Minnesota DOT</div>
+        <div class="endorsement-tag">Missouri DOT</div>
+        <div class="endorsement-tag">Colorado DOT</div>
+        <div class="endorsement-tag">TxDOT</div>
+        <div class="endorsement-tag">Kansas DOT</div>
+        <div class="endorsement-tag">NCDOT</div>
+        <div class="endorsement-tag">FHWA</div>
+        <div class="endorsement-tag">Texas A&M TTI</div>
+        <div class="endorsement-tag">NC State ITRE</div>
+        <div class="endorsement-tag">Germany (required by law)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTICIPATE -->
+<section id="participate">
+  <div class="container">
+    <div class="section-label">07 — How to Participate</div>
+    <div class="section-title">Every conversation counts.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">01</div>
+        <div class="step-content">
+          <h3>Learn the basics</h3>
+          <p>Both lanes to the merge point. Take turns. 40–50% shorter backups. AAA endorses it. That's all you need.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <div class="step-content">
+          <h3>Tell the people in your life</h3>
+          <p>Next time someone complains about traffic&mdash;and in Houston, that's daily&mdash;share the zipper merge. At dinner, in the carpool, at the office, over text.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <div class="step-content">
+          <h3>Go bigger if you want</h3>
+          <p>Post it on social. Call a radio station and reach thousands. The bolder you go, the more people hear it&mdash;but even one conversation matters.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">04</div>
+        <div class="step-content">
+          <h3>Log it &amp; keep going</h3>
+          <p>Every time you spread the word, log it below. It helps us see momentum and makes your action part of something collective.</p>
+        </div>
+      </div>
+    </div>
+    <div class="spread-channels">
+      <h3>Every channel works. Pick yours.</h3>
+      <div class="channel-grid">
+        <div class="channel"><div class="channel-icon">💬</div><div class="channel-name">Conversation</div></div>
+        <div class="channel"><div class="channel-icon">👨‍👩‍👧‍👦</div><div class="channel-name">Family dinner</div></div>
+        <div class="channel"><div class="channel-icon">🚗</div><div class="channel-name">Carpool</div></div>
+        <div class="channel"><div class="channel-icon">🏢</div><div class="channel-name">Office / Slack</div></div>
+        <div class="channel"><div class="channel-icon">📱</div><div class="channel-name">Group text</div></div>
+        <div class="channel"><div class="channel-icon">📲</div><div class="channel-name">Social post</div></div>
+        <div class="channel"><div class="channel-icon">📻</div><div class="channel-name">Radio call-in</div></div>
+        <div class="channel"><div class="channel-icon">🗞️</div><div class="channel-name">Nextdoor</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section id="tracker">
+  <div class="container">
+    <div class="section-label">08 — Participation Tracker</div>
+    <div class="tracker-box">
+      <div class="tracker-prompt">I spread the word about zipper merging.</div>
+      <div class="tracker-actions">
+        <button class="tracker-btn" onclick="logAction(this)"><span class="tb-icon">🗣️</span>Told someone in person</button>
+        <button class="tracker-btn" onclick="logAction(this)"><span class="tb-icon">📱</span>Texted / messaged</button>
+        <button class="tracker-btn" onclick="logAction(this)"><span class="tb-icon">📲</span>Posted online</button>
+        <button class="tracker-btn" onclick="logAction(this)"><span class="tb-icon">📻</span>Called a radio show</button>
+        <button class="tracker-btn" onclick="logAction(this)"><span class="tb-icon">✊</span>Other action</button>
+      </div>
+      <div class="tracker-counter">
+        <div class="tc-number" id="actionCount">0</div>
+        <div class="tc-label">Actions logged this session</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🦍 Gorilla PSA Houston</div>
+  <div class="footer-tagline">Zipper merge, Houston. Look it up.</div>
+  <p>No brand. No budget. No organization. Just Houstonians telling other Houstonians how to drive smarter.<br>A grassroots community initiative. Not affiliated with any government agency, company, or organization.</p>
+</footer>
+
+<script>
+  let count = 0;
+  let zipperOn = false;
+
+  function copyPhone(btn, number) {
+    const raw = number.replace(/-/g, '');
+    navigator.clipboard.writeText(raw).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+      window.location.href = 'tel:' + raw;
+    });
+  }
+
+  function copyLink(btn) {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = '✓ Link copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy link to share';
+        btn.classList.remove('copied');
+      }, 2500);
+    }).catch(() => {
+      btn.textContent = 'Select & copy URL bar';
+      setTimeout(() => { btn.textContent = 'Copy link to share'; }, 2500);
+    });
+  }
+  function toggleZipper() {
+    zipperOn = !zipperOn;
+    const table = document.getElementById('worstRoads');
+    const toggle = document.getElementById('wrToggle');
+    const footnote = document.getElementById('wrFootnote');
+    const nums = document.querySelectorAll('.wr-delay-num');
+    if (zipperOn) {
+      table.classList.add('zipper-mode');
+      toggle.classList.add('active');
+      nums.forEach(n => { n.textContent = n.dataset.zip; });
+      footnote.textContent = 'Estimated delay with widespread zipper merge adoption, based on 40–50% backup reduction documented by MnDOT, MoDOT, CDOT, and FHWA studies.';
+    } else {
+      table.classList.remove('zipper-mode');
+      toggle.classList.remove('active');
+      nums.forEach(n => { n.textContent = n.dataset.now; });
+      footnote.textContent = 'Rankings reflect statewide position in TTI\'s Texas Top 100 Congested Road Segments. Added minutes are estimated peak-hour delay vs. free-flow conditions.';
+    }
+  }
+  function logAction(btn) {
+    if (btn.classList.contains('clicked')) return;
+    btn.classList.add('clicked');
+    count++;
+    const counter = document.getElementById('actionCount');
+    counter.textContent = count;
+    counter.style.transform = 'scale(1.15)';
+    setTimeout(() => counter.style.transform = 'scale(1)', 200);
+  }
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.boxShadow =
+      window.scrollY > 10 ? '0 2px 20px rgba(0,0,0,0.3)' : 'none';
+  });
+</script>
+</body>
+</html>
