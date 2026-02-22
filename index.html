@@ -826,6 +826,19 @@
     background: var(--green); color: white;
     border-color: var(--green);
   }
+  /* Station accordion */
+  .station-grid .station-card:nth-child(n+3) { display: none; }
+  .station-grid.expanded .station-card:nth-child(n+3) { display: grid; animation: stationFadeIn 0.3s ease-out; }
+  @keyframes stationFadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .stations-toggle {
+    display: block; width: 100%; margin-top: 1rem;
+    background: rgba(245,240,232,0.06); border: 1px solid rgba(245,240,232,0.15);
+    color: rgba(245,240,232,0.6); font-family: var(--font-mono);
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .stations-toggle:hover { background: rgba(255,214,10,0.1); color: var(--yellow); border-color: var(--yellow); }
+
   .stations-note {
     margin-top: 2rem; padding: 1.25rem;
     background: rgba(255,214,10,0.08); border-left: 3px solid var(--yellow);
@@ -1317,6 +1330,7 @@
         </div>
       </div>
     </div>
+    <button class="stations-toggle" onclick="toggleStations(this)">Show 5 more stations ↓</button>
     <div class="stations-note">
       <p><strong>Tip:</strong> You don't need to be a regular caller. Dial in, wait your turn, share the tip like you'd tell a friend. Under 30 seconds. Be friendly. Even if the host moves on, you just reached every listener in their car.</p>
     </div>
@@ -1509,6 +1523,12 @@
       nums.forEach(n => { n.textContent = n.dataset.now; });
       footnote.textContent = 'Rankings reflect statewide position in TTI\'s Texas Top 100 Congested Road Segments. Added minutes are estimated peak-hour delay vs. free-flow conditions.';
     }
+  }
+  function toggleStations(btn) {
+    const grid = document.querySelector('.station-grid');
+    grid.classList.toggle('expanded');
+    const expanded = grid.classList.contains('expanded');
+    btn.textContent = expanded ? 'Show fewer ↑' : 'Show 5 more stations ↓';
   }
   function logAction(btn) {
     if (btn.classList.contains('clicked')) return;
