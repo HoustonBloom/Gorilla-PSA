@@ -37,7 +37,7 @@
   nav .logo {
     font-family: var(--font-mono); color: rgba(245,240,232,0.6);
     font-size: 0.7rem; text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.12em; text-decoration: none; cursor: pointer;
   }
   nav .nav-links { display: flex; gap: 0.25rem; }
   nav .nav-links a {
@@ -789,7 +789,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Fix Houston Traffic</div>
+  <a href="#" class="logo" onclick="window.scrollTo(0,0)">Fix Houston Traffic</a>
   <button class="nav-toggle" onclick="this.classList.toggle('open'); document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">
     <span></span><span></span><span></span>
   </button>
