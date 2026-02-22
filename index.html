@@ -998,23 +998,28 @@
         <!-- Merge marker -->
         <line x1="640" y1="93" x2="640" y2="148" stroke="#FFD60A" stroke-width="2" stroke-dasharray="4,3"/>
         <text x="648" y="136" font-family="'DM Mono',monospace" font-size="9" fill="#FFD60A" letter-spacing="0.08em">MERGE POINT</text>
-        <!-- Top lane — evenly spaced approaching merge -->
-        <use href="#zcar-blue" x="360" y="54"/>
-        <use href="#zcar-sky" x="430" y="54"/>
-        <use href="#zcar-indigo" x="500" y="54"/>
-        <!-- Bottom lane — evenly spaced, offset from top -->
-        <use href="#zcar-teal" x="395" y="108"/>
-        <use href="#zcar-green" x="465" y="108"/>
-        <use href="#zcar-teal" x="535" y="108"/>
-        <!-- After merge — single file, alternating colors (blue/teal) -->
-        <use href="#zcar-indigo" x="648" y="108"/>
-        <use href="#zcar-green" x="700" y="108"/>
-        <use href="#zcar-blue" x="752" y="108"/>
+        <!-- Top lane (blue shades) — approaching merge from left -->
+        <use href="#zcar-blue" x="340" y="54"/>
+        <use href="#zcar-sky" x="400" y="54"/>
+        <use href="#zcar-blue" x="460" y="54"/>
+        <use href="#zcar-indigo" x="520" y="54"/>
+        <!-- Bottom lane (green shades) — approaching merge from left -->
+        <use href="#zcar-teal" x="340" y="108"/>
+        <use href="#zcar-green" x="400" y="108"/>
+        <use href="#zcar-teal" x="460" y="108"/>
+        <use href="#zcar-green" x="520" y="108"/>
+        <!-- Merge zone — top lane cars angling down to join bottom lane -->
+        <!-- Last top-lane car sliding down diagonally -->
+        <use href="#zcar-sky" x="580" y="68"/>
+        <!-- After merge — single file alternating: bottom, top, bottom, top -->
+        <use href="#zcar-green" x="640" y="108"/>
+        <use href="#zcar-blue" x="692" y="108"/>
+        <use href="#zcar-teal" x="744" y="108"/>
         <!-- Backup bracket -->
-        <line x1="360" y1="158" x2="640" y2="158" stroke="#2A9D8F" stroke-width="2"/>
-        <line x1="360" y1="153" x2="360" y2="163" stroke="#2A9D8F" stroke-width="2"/>
+        <line x1="340" y1="158" x2="640" y2="158" stroke="#2A9D8F" stroke-width="2"/>
+        <line x1="340" y1="153" x2="340" y2="163" stroke="#2A9D8F" stroke-width="2"/>
         <line x1="640" y1="153" x2="640" y2="163" stroke="#2A9D8F" stroke-width="2"/>
-        <text x="500" y="178" font-family="'DM Mono',monospace" font-size="10" fill="#2A9D8F" text-anchor="middle" letter-spacing="0.04em">SHORT BACKUP</text>
+        <text x="490" y="178" font-family="'DM Mono',monospace" font-size="10" fill="#2A9D8F" text-anchor="middle" letter-spacing="0.04em">SHORT BACKUP</text>
       </svg>
 
       <!-- Pills + summary (HTML) -->
