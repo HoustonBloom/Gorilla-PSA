@@ -922,19 +922,21 @@
         <!-- Merge marker -->
         <line x1="640" y1="93" x2="640" y2="148" stroke="#FFD60A" stroke-width="2" stroke-dasharray="4,3"/>
         <text x="648" y="136" font-family="'DM Mono',monospace" font-size="9" fill="#FFD60A" letter-spacing="0.08em">MERGE POINT</text>
-        <!-- Top lane cars -->
+        <!-- Top lane — filled with cars, one cutting into bottom lane -->
         <use href="#car-red" x="40" y="54"/>
-        <use href="#car-darkred" x="100" y="54"/>
-        <use href="#car-orange" x="168" y="54"/>
-        <use href="#car-red" x="236" y="54"/>
-        <use href="#car-darkred" x="310" y="54"/>
-        <!-- Cut-in arrow -->
-        <path d="M 370 65 C 390 65, 395 81, 400 93" stroke="#E63946" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
-        <polygon points="398,96 405,90 402,97" fill="#E63946"/>
-        <use href="#car-orange" x="400" y="54" opacity="0.35"/>
-        <!-- Top lane cars AHEAD of cut-in (between cut-in and merge point) -->
+        <use href="#car-darkred" x="92" y="54"/>
+        <use href="#car-orange" x="144" y="54"/>
+        <use href="#car-red" x="196" y="54"/>
+        <use href="#car-darkred" x="248" y="54"/>
+        <!-- Cut-in arrow (car at 248 dives down) -->
+        <path d="M 300 65 C 318 65, 326 81, 330 97" stroke="#E63946" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+        <polygon points="328,100 335,94 332,101" fill="#E63946"/>
+        <use href="#car-orange" x="300" y="54" opacity="0.3"/>
+        <!-- Cars ahead of the cut-in, continuing toward merge -->
+        <use href="#car-red" x="352" y="54"/>
+        <use href="#car-darkred" x="404" y="54"/>
         <use href="#car-red" x="456" y="54"/>
-        <use href="#car-darkred" x="520" y="54"/>
+        <use href="#car-darkred" x="508" y="54"/>
         <!-- Bottom lane — packed -->
         <use href="#car-red" x="40" y="108"/>
         <use href="#car-darkred" x="92" y="108"/>
