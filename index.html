@@ -49,6 +49,22 @@
   }
   nav .nav-links a:hover { background: var(--yellow); color: var(--black); }
 
+  /* Hamburger toggle */
+  .nav-toggle {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 32px; height: 24px; position: relative; z-index: 101;
+  }
+  .nav-toggle span {
+    display: block; width: 100%; height: 2px; background: var(--offwhite);
+    position: absolute; left: 0; transition: transform 0.3s, opacity 0.2s;
+  }
+  .nav-toggle span:nth-child(1) { top: 2px; }
+  .nav-toggle span:nth-child(2) { top: 11px; }
+  .nav-toggle span:nth-child(3) { top: 20px; }
+  .nav-toggle.open span:nth-child(1) { top: 11px; transform: rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { top: 11px; transform: rotate(-45deg); }
+
   /* HERO */
   .hero {
     min-height: 100vh; display: flex; flex-direction: column;
@@ -709,7 +725,18 @@
 
   /* RESPONSIVE */
   @media (max-width: 700px) {
-    nav .nav-links a { font-size: 0.6rem; padding: 0.3rem 0.4rem; }
+    .nav-toggle { display: block; }
+    nav .nav-links {
+      display: none; flex-direction: column; gap: 0;
+      position: absolute; top: 56px; left: 0; right: 0;
+      background: var(--black); border-bottom: 3px solid var(--yellow);
+      padding: 0.5rem 0;
+    }
+    nav .nav-links.open { display: flex; }
+    nav .nav-links a {
+      font-size: 0.75rem; padding: 0.75rem 1.5rem;
+      border-radius: 0; border-bottom: 1px solid rgba(245,240,232,0.08);
+    }
 
     .evidence-pair { grid-template-columns: 1fr; }
     .step { grid-template-columns: 55px 1fr; }
@@ -729,7 +756,10 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Fix Houston Traffic</div>
+  <div class="logo">Houston PSA</div>
+  <button class="nav-toggle" onclick="this.classList.toggle('open'); document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
   <div class="nav-links">
     <a href="#the-problem">Problem</a>
     <a href="#what-is-it">Solution</a>
@@ -746,7 +776,7 @@
   <div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div><div class="road-stripe"></div>
   <div class="hero-content">
     <div class="hero-badge">Gorilla PSA</div>
-    <div class="hero-brand">Fix Houston Traffic</div>
+    <div class="hero-brand">Houston PSA</div>
     <h1>Tell someone about<span class="accent">the zipper merge.</span></h1>
     <p class="hero-sub">
       Houstonians lose <strong>nearly 4 full days</strong> a year sitting in traffic. But data shows if drivers learn one simple technique, we could cut backups by <strong>up to 50%</strong>. That's <strong>2 days of your life back</strong>, every single year.<br><br>All you have to do is spread the word.
@@ -833,7 +863,7 @@
     <p class="explainer">When a lane is ending, you use <strong>both lanes all the way to the merge point</strong>, then take turns&mdash;one car from each lane, like the teeth of a zipper. Watch what happens compared to what most drivers do today.</p>
 
     <!-- STATIC MERGE COMPARISON -->
-    <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;margin:0 auto;display:block;" role="img" aria-label="Comparison of regular merging versus zipper merging">
+    <svg viewBox="0 0 800 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;margin:0 auto;display:block;" role="img" aria-label="Comparison of how merging works today versus zipper merging">
       <defs>
         <!-- Car shapes -->
         <g id="car-red">
@@ -842,10 +872,6 @@
         </g>
         <g id="car-blue">
           <rect width="44" height="22" rx="4" fill="#3B82F6"/>
-          <rect x="28" y="3" width="12" height="16" rx="2" fill="rgba(255,255,255,0.2)"/>
-        </g>
-        <g id="car-yellow">
-          <rect width="44" height="22" rx="4" fill="#F59E0B"/>
           <rect x="28" y="3" width="12" height="16" rx="2" fill="rgba(255,255,255,0.2)"/>
         </g>
         <g id="car-teal">
@@ -868,16 +894,20 @@
           <rect width="44" height="22" rx="4" fill="#6366F1"/>
           <rect x="28" y="3" width="12" height="16" rx="2" fill="rgba(255,255,255,0.2)"/>
         </g>
+        <g id="car-orange">
+          <rect width="44" height="22" rx="4" fill="#F97316"/>
+          <rect x="28" y="3" width="12" height="16" rx="2" fill="rgba(255,255,255,0.2)"/>
+        </g>
         <!-- Hatching pattern -->
         <pattern id="hatch" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(-45)">
           <line x1="0" y1="0" x2="0" y2="10" stroke="rgba(255,255,255,0.12)" stroke-width="3"/>
         </pattern>
       </defs>
 
-      <!-- ===== REGULAR MERGING (TOP) ===== -->
+      <!-- ===== TODAY (TOP) ===== -->
       <!-- Title -->
-      <text x="20" y="28" font-family="'Archivo Black',sans-serif" font-size="16" fill="#E63946" text-transform="uppercase">❌ REGULAR MERGING</text>
-      <text x="310" y="28" font-family="'DM Mono',monospace" font-size="11" fill="#999" letter-spacing="0.05em">WHAT MOST PEOPLE DO</text>
+      <text x="20" y="28" font-family="'Archivo Black',sans-serif" font-size="16" fill="#E63946">❌ TODAY</text>
+      <text x="130" y="28" font-family="'DM Mono',monospace" font-size="11" fill="#999" letter-spacing="0.05em">WHAT MOST PEOPLE DO</text>
 
       <!-- Road surface -->
       <rect x="20" y="42" width="760" height="110" rx="4" fill="#4a4a4a"/>
@@ -893,14 +923,23 @@
       <!-- Road edge markings -->
       <line x1="560" y1="42" x2="780" y2="42" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
 
-      <!-- "Unused road" label -->
-      <text x="600" y="75" font-family="'DM Mono',monospace" font-size="10" fill="rgba(255,255,255,0.35)" letter-spacing="0.1em" text-anchor="middle">UNUSED ROAD</text>
-
       <!-- Merge point marker -->
       <line x1="640" y1="97" x2="640" y2="152" stroke="#FFD60A" stroke-width="2" stroke-dasharray="4,3"/>
       <text x="648" y="140" font-family="'DM Mono',monospace" font-size="9" fill="#FFD60A" letter-spacing="0.08em">MERGE POINT</text>
 
-      <!-- Bottom lane — PACKED with cars (long backup) -->
+      <!-- Top lane — cars that haven't merged yet + cars cutting in early -->
+      <use href="#car-red" x="40" y="58"/>
+      <use href="#car-darkred" x="100" y="58"/>
+      <use href="#car-orange" x="168" y="58"/>
+      <use href="#car-red" x="236" y="58"/>
+      <use href="#car-darkred" x="310" y="58"/>
+
+      <!-- Arrow showing a car cutting down into the bottom lane early -->
+      <path d="M 370 69 C 390 69, 395 85, 400 97" stroke="#E63946" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+      <polygon points="398,100 405,94 402,101" fill="#E63946"/>
+      <use href="#car-orange" x="400" y="58" opacity="0.35"/>
+
+      <!-- Bottom lane — PACKED with cars (long backup from early mergers) -->
       <use href="#car-red" x="40" y="112"/>
       <use href="#car-darkred" x="92" y="112"/>
       <use href="#car-red" x="144" y="112"/>
@@ -914,79 +953,88 @@
       <use href="#car-red" x="560" y="112"/>
       <use href="#car-darkred" x="612" y="112"/>
 
-      <!-- Top lane — nearly empty (1 car already merged over) -->
-      <use href="#car-red" x="80" y="58"/>
-
       <!-- Cars that already passed merge — single file out the right -->
       <use href="#car-darkred" x="680" y="112"/>
       <use href="#car-red" x="730" y="112"/>
 
-      <!-- Backup bracket / arrow -->
+      <!-- Backup bracket -->
       <line x1="40" y1="162" x2="620" y2="162" stroke="#E63946" stroke-width="2"/>
       <line x1="40" y1="157" x2="40" y2="167" stroke="#E63946" stroke-width="2"/>
       <line x1="620" y1="157" x2="620" y2="167" stroke="#E63946" stroke-width="2"/>
-      <text x="330" y="180" font-family="'DM Mono',monospace" font-size="11" fill="#E63946" text-anchor="middle" letter-spacing="0.05em">LONG BACKUP — ONE LANE DOES ALL THE WORK</text>
+      <text x="330" y="178" font-family="'DM Mono',monospace" font-size="10" fill="#E63946" text-anchor="middle" letter-spacing="0.04em">LONG BACKUP</text>
+
+      <!-- Pill labels -->
+      <rect x="48" y="190" width="200" height="26" rx="13" fill="#E63946"/>
+      <text x="148" y="207" font-family="'DM Mono',monospace" font-size="9.5" fill="white" text-anchor="middle" letter-spacing="0.03em">People cut in early</text>
+
+      <rect x="268" y="190" width="340" height="26" rx="13" fill="#E63946"/>
+      <text x="438" y="207" font-family="'DM Mono',monospace" font-size="9.5" fill="white" text-anchor="middle" letter-spacing="0.03em">Others speed up or slow down to block</text>
+
+      <!-- Red summary box -->
+      <rect x="20" y="230" width="760" height="52" rx="4" fill="rgba(230,57,70,0.08)" stroke="#E63946" stroke-width="1.5"/>
+      <text x="400" y="253" font-family="'Archivo Black',sans-serif" font-size="13" fill="#E63946" text-anchor="middle">1 LANE BACKED UP, ROAD RAGE, SLOWER FOR EVERYONE</text>
+      <text x="400" y="272" font-family="'DM Mono',monospace" font-size="10" fill="#999" text-anchor="middle">More conflict · Longer backup · Up to 2× the queue length</text>
 
       <!-- Separator -->
-      <line x1="20" y1="210" x2="780" y2="210" stroke="#E5E0D8" stroke-width="1" opacity="0.5"/>
+      <line x1="20" y1="302" x2="780" y2="302" stroke="#E5E0D8" stroke-width="1" opacity="0.5"/>
 
       <!-- ===== ZIPPER MERGING (BOTTOM) ===== -->
       <!-- Title -->
-      <text x="20" y="248" font-family="'Archivo Black',sans-serif" font-size="16" fill="#2A9D8F" text-transform="uppercase">✅ ZIPPER MERGING</text>
-      <text x="310" y="248" font-family="'DM Mono',monospace" font-size="11" fill="#999" letter-spacing="0.05em">BOTH LANES → TAKE TURNS</text>
+      <text x="20" y="340" font-family="'Archivo Black',sans-serif" font-size="16" fill="#2A9D8F">✅ ZIPPER MERGING</text>
+      <text x="270" y="340" font-family="'DM Mono',monospace" font-size="11" fill="#999" letter-spacing="0.05em">BOTH LANES → TAKE TURNS</text>
 
       <!-- Road surface -->
-      <rect x="20" y="262" width="760" height="110" rx="4" fill="#4a4a4a"/>
+      <rect x="20" y="354" width="760" height="110" rx="4" fill="#4a4a4a"/>
 
       <!-- Lane divider (dashed line) — only in open road portion -->
-      <line x1="20" y1="317" x2="560" y2="317" stroke="white" stroke-width="2" stroke-dasharray="16,12" opacity="0.5"/>
+      <line x1="20" y1="409" x2="560" y2="409" stroke="white" stroke-width="2" stroke-dasharray="16,12" opacity="0.5"/>
 
       <!-- Lane closure zone (right side, top lane) — hatched -->
-      <polygon points="560,262 780,262 780,317 640,317" fill="url(#hatch)"/>
-      <polygon points="560,262 780,262 780,317 640,317" fill="rgba(0,0,0,0.25)"/>
+      <polygon points="560,354 780,354 780,409 640,409" fill="url(#hatch)"/>
+      <polygon points="560,354 780,354 780,409 640,409" fill="rgba(0,0,0,0.25)"/>
       <!-- Diagonal merge line -->
-      <line x1="560" y1="262" x2="640" y2="317" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <line x1="560" y1="354" x2="640" y2="409" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
       <!-- Road edge markings -->
-      <line x1="560" y1="262" x2="780" y2="262" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+      <line x1="560" y1="354" x2="780" y2="354" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
 
       <!-- Merge point marker -->
-      <line x1="640" y1="317" x2="640" y2="372" stroke="#FFD60A" stroke-width="2" stroke-dasharray="4,3"/>
-      <text x="648" y="360" font-family="'DM Mono',monospace" font-size="9" fill="#FFD60A" letter-spacing="0.08em">MERGE POINT</text>
+      <line x1="640" y1="409" x2="640" y2="464" stroke="#FFD60A" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="648" y="452" font-family="'DM Mono',monospace" font-size="9" fill="#FFD60A" letter-spacing="0.08em">MERGE POINT</text>
 
       <!-- Top lane — evenly spaced blue/cool cars -->
-      <use href="#car-blue" x="340" y="278"/>
-      <use href="#car-sky" x="410" y="278"/>
-      <use href="#car-blue" x="480" y="278"/>
-      <use href="#car-indigo" x="550" y="278"/>
+      <use href="#car-blue" x="340" y="370"/>
+      <use href="#car-sky" x="410" y="370"/>
+      <use href="#car-blue" x="480" y="370"/>
+      <use href="#car-indigo" x="550" y="370"/>
 
       <!-- Bottom lane — evenly spaced green/teal cars -->
-      <use href="#car-teal" x="375" y="332"/>
-      <use href="#car-green" x="445" y="332"/>
-      <use href="#car-teal" x="515" y="332"/>
-      <use href="#car-green" x="585" y="332"/>
+      <use href="#car-teal" x="375" y="424"/>
+      <use href="#car-green" x="445" y="424"/>
+      <use href="#car-teal" x="515" y="424"/>
+      <use href="#car-green" x="585" y="424"/>
 
       <!-- Merge zone — alternating cars converging -->
-      <use href="#car-indigo" x="620" y="295"/>
-      <use href="#car-green" x="620" y="332"/>
+      <use href="#car-indigo" x="620" y="387"/>
+      <use href="#car-green" x="620" y="424"/>
 
-      <!-- Cars that already passed merge — single file out the right -->
-      <use href="#car-blue" x="672" y="332"/>
-      <use href="#car-teal" x="722" y="332"/>
+      <!-- Cars that already passed merge — single file alternating out the right -->
+      <use href="#car-blue" x="672" y="424"/>
+      <use href="#car-teal" x="722" y="424"/>
 
-      <!-- Backup bracket / arrow -->
-      <line x1="340" y1="382" x2="620" y2="382" stroke="#2A9D8F" stroke-width="2"/>
-      <line x1="340" y1="377" x2="340" y2="387" stroke="#2A9D8F" stroke-width="2"/>
-      <line x1="620" y1="377" x2="620" y2="387" stroke="#2A9D8F" stroke-width="2"/>
-      <text x="480" y="400" font-family="'DM Mono',monospace" font-size="11" fill="#2A9D8F" text-anchor="middle" letter-spacing="0.05em">SHORT BACKUP — BOTH LANES SHARE THE LOAD</text>
+      <!-- Backup bracket -->
+      <line x1="340" y1="474" x2="620" y2="474" stroke="#2A9D8F" stroke-width="2"/>
+      <line x1="340" y1="469" x2="340" y2="479" stroke="#2A9D8F" stroke-width="2"/>
+      <line x1="620" y1="469" x2="620" y2="479" stroke="#2A9D8F" stroke-width="2"/>
+      <text x="480" y="492" font-family="'DM Mono',monospace" font-size="10" fill="#2A9D8F" text-anchor="middle" letter-spacing="0.04em">SHORT BACKUP</text>
 
-      <!-- Bottom summary stats -->
-      <rect x="20" y="430" width="370" height="70" rx="4" fill="rgba(230,57,70,0.08)" stroke="#E63946" stroke-width="1.5"/>
-      <text x="205" y="458" font-family="'Archivo Black',sans-serif" font-size="13" fill="#E63946" text-anchor="middle">REGULAR: 1 LANE BACKED UP, 1 LANE WASTED</text>
-      <text x="205" y="480" font-family="'DM Mono',monospace" font-size="10" fill="#999" text-anchor="middle">More road rage · Longer backup · Slower for everyone</text>
+      <!-- Pill label -->
+      <rect x="240" y="502" width="320" height="26" rx="13" fill="#2A9D8F"/>
+      <text x="400" y="519" font-family="'DM Mono',monospace" font-size="9.5" fill="white" text-anchor="middle" letter-spacing="0.03em">Everyone merges at the same spot</text>
 
-      <rect x="410" y="430" width="370" height="70" rx="4" fill="rgba(42,157,143,0.08)" stroke="#2A9D8F" stroke-width="1.5"/>
-      <text x="595" y="458" font-family="'Archivo Black',sans-serif" font-size="13" fill="#2A9D8F" text-anchor="middle">ZIPPER: BOTH LANES USED, 40–50% SHORTER</text>
-      <text x="595" y="480" font-family="'DM Mono',monospace" font-size="10" fill="#999" text-anchor="middle">Take turns · Less conflict · Faster for everyone</text>
+      <!-- Green summary box -->
+      <rect x="20" y="544" width="760" height="52" rx="4" fill="rgba(42,157,143,0.08)" stroke="#2A9D8F" stroke-width="1.5"/>
+      <text x="400" y="567" font-family="'Archivo Black',sans-serif" font-size="13" fill="#2A9D8F" text-anchor="middle">BOTH LANES USED · 40–50% SHORTER BACKUP · FASTER FOR EVERYONE</text>
+      <text x="400" y="586" font-family="'DM Mono',monospace" font-size="10" fill="#999" text-anchor="middle">Take turns · Less conflict · No road rage</text>
     </svg>
 
     <div style="text-align:center; margin-top: 1rem;">
