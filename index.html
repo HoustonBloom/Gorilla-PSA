@@ -389,223 +389,233 @@
     opacity: 0.8;
   }
 
+  /* Road — horizontal, left-to-right */
   .sim-road {
     position: relative;
-    height: 340px;
-    background: #3a3a3a;
+    height: 200px;
+    background: #4a4a4a;
     overflow: hidden;
   }
 
-  /* Road markings */
+  /* Lane divider — dashed center line */
   .sim-road::before {
     content: '';
     position: absolute;
-    left: 50%; top: 0;
-    width: 3px;
-    height: 55%;
-    transform: translateX(-50%);
+    top: 50%; left: 0;
+    width: 65%;
+    height: 3px;
+    transform: translateY(-50%);
     background: repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.5) 0px,
-      rgba(255,255,255,0.5) 12px,
-      transparent 12px,
-      transparent 24px
+      to right,
+      rgba(255,255,255,0.6) 0px,
+      rgba(255,255,255,0.6) 14px,
+      transparent 14px,
+      transparent 28px
     );
+    z-index: 1;
   }
 
-  /* Merge funnel */
-  .sim-funnel {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 45%;
-  }
-  .sim-funnel::before {
-    content: '';
+  /* Lane closure zone — hatched area top-right */
+  .lane-closed {
     position: absolute;
     top: 0; right: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to bottom left, #3a3a3a 0%, #3a3a3a 40%, #6b6b6b 40.5%, #6b6b6b 41.5%, transparent 42%);
+    width: 35%;
+    height: 50%;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 6px,
+        rgba(255,255,255,0.08) 6px,
+        rgba(255,255,255,0.08) 12px
+      );
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 40% 100%);
   }
-  /* Curb / barrier on right */
-  .sim-curb {
+  .lane-closed::before {
+    content: '';
     position: absolute;
-    bottom: 0; right: 0;
-    width: 0; height: 0;
-    border-style: solid;
-    border-width: 0 0 153px 50%;
-    border-color: transparent transparent var(--offwhite) transparent;
+    bottom: 0; left: 0;
+    width: 100%; height: 100%;
+    border-bottom: 3px solid rgba(255,255,255,0.25);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 40% 100%);
+  }
+  /* Diagonal merge line */
+  .lane-closed::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; top: 0;
+    border-bottom: 3px solid rgba(255,255,255,0.3);
+    clip-path: polygon(40% 100%, 0 0, 3% 0, 43% 100%);
     z-index: 2;
+  }
+
+  /* "Unused road" overlay for bad panel */
+  .unused-label {
+    position: absolute;
+    top: 16%; right: 12%;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.35);
+    z-index: 4;
+    pointer-events: none;
   }
 
   /* Merge point marker */
   .sim-merge-marker {
     position: absolute;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
+    right: 0; top: 50%;
+    transform: translateY(-50%);
     z-index: 5;
     font-family: var(--font-mono);
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     color: var(--yellow);
-    background: rgba(0,0,0,0.7);
-    padding: 0.2rem 0.5rem;
+    background: rgba(0,0,0,0.75);
+    padding: 0.2rem 0.45rem;
     white-space: nowrap;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
   }
 
-  /* Cars */
+  /* Cars — horizontal orientation */
   .car {
     position: absolute;
-    width: 24px;
-    height: 38px;
-    border-radius: 5px 5px 3px 3px;
+    width: 36px;
+    height: 20px;
+    border-radius: 3px 6px 6px 3px;
     z-index: 3;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 2px 1px 4px rgba(0,0,0,0.3);
   }
   .car::before {
     content: '';
     position: absolute;
-    top: 5px; left: 4px; right: 4px; height: 8px;
-    background: rgba(255,255,255,0.2);
+    top: 3px; right: 5px;
+    width: 9px; height: 14px;
+    background: rgba(255,255,255,0.18);
     border-radius: 2px;
   }
-  .car.blue { background: #4A90D9; }
+  .car.red { background: #E63946; }
+  .car.darkred { background: #B91C2C; }
+  .car.crimson { background: #DC2626; }
+  .car.salmon { background: #F87171; }
   .car.orange { background: var(--orange); }
+  .car.amber { background: #D97706; }
+  .car.blue { background: #3B82F6; }
+  .car.darkblue { background: #1E40AF; }
+  .car.sky { background: #0EA5E9; }
   .car.teal { background: var(--green); }
-  .car.purple { background: #8B5CF6; }
-  .car.pink { background: #EC4899; }
-  .car.yellow { background: #F59E0B; }
+  .car.indigo { background: #6366F1; }
+  .car.green { background: #16A34A; }
 
-  /* ---- EARLY MERGE CARS ---- */
-  /* Right lane (merging lane) - mostly empty near merge, cars moved left early */
-  /* Left lane - packed with backed up cars */
+  /* ---- EARLY MERGE (BAD) — bottom lane packed, top lane empty ---- */
+  /* Bottom lane — bumper-to-bumper, creeping right */
+  .bad-panel .car-b1 { left: 2%; top: 62%; animation: creepRight 5s ease-in-out infinite; }
+  .bad-panel .car-b2 { left: 12%; top: 62%; animation: creepRight 5s ease-in-out infinite 0.5s; }
+  .bad-panel .car-b3 { left: 22%; top: 62%; animation: creepRight 5s ease-in-out infinite 1s; }
+  .bad-panel .car-b4 { left: 32%; top: 62%; animation: creepRight 5s ease-in-out infinite 1.5s; }
+  .bad-panel .car-b5 { left: 42%; top: 62%; animation: creepRight 5s ease-in-out infinite 2s; }
+  .bad-panel .car-b6 { left: 52%; top: 62%; animation: creepRight 5s ease-in-out infinite 2.5s; }
+  .bad-panel .car-b7 { left: 62%; top: 62%; animation: creepDrain 5s ease-in-out infinite 3s; }
 
-  /* Backed up left lane - long queue */
-  .bad-panel .car-b1 { left: 22%; top: 2%; animation: earlyCreep 8s linear infinite; }
-  .bad-panel .car-b2 { left: 22%; top: 14%; animation: earlyCreep 8s linear infinite 0.4s; }
-  .bad-panel .car-b3 { left: 22%; top: 26%; animation: earlyCreep 8s linear infinite 0.8s; }
-  .bad-panel .car-b4 { left: 22%; top: 38%; animation: earlyCreep 8s linear infinite 1.2s; }
-  .bad-panel .car-b5 { left: 22%; top: 50%; animation: earlyCreep 8s linear infinite 1.6s; }
-  .bad-panel .car-b6 { left: 25%; top: 62%; animation: earlyDrain 8s linear infinite 2s; }
-  .bad-panel .car-b7 { left: 28%; top: 74%; animation: earlyDrain 8s linear infinite 2.4s; }
+  /* Top lane — nearly empty (1 car merged over early) */
+  .bad-panel .car-t1 { left: 8%; top: 18%; animation: earlyMergeOver 6s ease-in-out infinite; }
 
-  /* Right lane - a couple of "late" cars getting blocked/angry */
-  .bad-panel .car-r1 { left: 60%; top: 8%; animation: earlyRightStuck 8s ease-in-out infinite; }
-  .bad-panel .car-r2 { left: 60%; top: 22%; animation: earlyRightForce 8s ease-in-out infinite 1s; }
-
-  @keyframes earlyCreep {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(6px); }
-    100% { transform: translateY(0); }
+  @keyframes creepRight {
+    0%, 100% { transform: translateX(0); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(8px); }
   }
-  @keyframes earlyDrain {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(12px); }
-    100% { transform: translateY(0); }
+  @keyframes creepDrain {
+    0%, 100% { transform: translateX(0); }
+    40% { transform: translateX(14px); }
+    60% { transform: translateX(14px); }
   }
-  @keyframes earlyRightStuck {
+  @keyframes earlyMergeOver {
     0% { transform: translate(0, 0); }
-    30% { transform: translate(0, 4px); }
-    50% { transform: translate(-20px, 10px); }
-    70% { transform: translate(-20px, 10px); }
-    100% { transform: translate(0, 0); }
-  }
-  @keyframes earlyRightForce {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(0, 8px); }
-    40% { transform: translate(-24px, 16px); }
-    60% { transform: translate(-24px, 16px); }
+    30% { transform: translate(12px, 0); }
+    60% { transform: translate(12px, 0); }
     100% { transform: translate(0, 0); }
   }
 
-  /* ---- ZIPPER MERGE CARS ---- */
-  /* Both lanes evenly filled, alternating at merge */
-  .good-panel .car-l1 { left: 22%; top: 8%; animation: zipLeft 6s linear infinite; }
-  .good-panel .car-l2 { left: 22%; top: 30%; animation: zipLeft 6s linear infinite 1s; }
-  .good-panel .car-l3 { left: 22%; top: 52%; animation: zipMergeLeft 6s linear infinite 2s; }
+  /* ---- ZIPPER MERGE (GOOD) — both lanes, alternating at merge ---- */
+  /* Top lane cars — flowing right */
+  .good-panel .car-t1 { left: 4%; top: 18%; animation: flowRight 4s linear infinite; }
+  .good-panel .car-t2 { left: 22%; top: 18%; animation: flowRight 4s linear infinite 0.7s; }
+  .good-panel .car-t3 { left: 40%; top: 18%; animation: flowRight 4s linear infinite 1.4s; }
 
-  .good-panel .car-r1 { left: 60%; top: 19%; animation: zipRight 6s linear infinite 0.5s; }
-  .good-panel .car-r2 { left: 60%; top: 41%; animation: zipRight 6s linear infinite 1.5s; }
-  .good-panel .car-r3 { left: 55%; top: 63%; animation: zipMergeRight 6s linear infinite 2.5s; }
+  /* Bottom lane cars — flowing right */
+  .good-panel .car-b1 { left: 13%; top: 62%; animation: flowRight 4s linear infinite 0.35s; }
+  .good-panel .car-b2 { left: 31%; top: 62%; animation: flowRight 4s linear infinite 1.05s; }
+  .good-panel .car-b3 { left: 49%; top: 62%; animation: flowMergeUp 4s linear infinite 1.75s; }
 
-  /* Merged cars exiting bottom */
-  .good-panel .car-m1 { left: 30%; top: 80%; animation: zipExit 6s linear infinite 3s; }
+  /* Merged cars exiting right */
+  .good-panel .car-m1 { left: 72%; top: 40%; animation: flowExit 4s linear infinite 2.1s; }
+  .good-panel .car-m2 { left: 84%; top: 40%; animation: flowExit 4s linear infinite 2.8s; }
 
-  @keyframes zipLeft {
-    0% { transform: translateY(-10px); opacity: 0; }
-    10% { opacity: 1; }
-    80% { transform: translateY(30px); opacity: 1; }
-    100% { transform: translateY(40px); opacity: 0.5; }
+  @keyframes flowRight {
+    0% { transform: translateX(-12px); opacity: 0; }
+    8% { opacity: 1; }
+    85% { transform: translateX(20px); opacity: 1; }
+    100% { transform: translateX(28px); opacity: 0.4; }
   }
-  @keyframes zipRight {
-    0% { transform: translateY(-10px); opacity: 0; }
-    10% { opacity: 1; }
-    80% { transform: translate(-8px, 30px); opacity: 1; }
-    100% { transform: translate(-12px, 40px); opacity: 0.5; }
-  }
-  @keyframes zipMergeLeft {
-    0% { transform: translateY(0); opacity: 0.8; }
-    50% { transform: translate(4px, 20px); opacity: 1; }
-    100% { transform: translate(6px, 40px); opacity: 0; }
-  }
-  @keyframes zipMergeRight {
+  @keyframes flowMergeUp {
     0% { transform: translate(0, 0); opacity: 0.8; }
-    50% { transform: translate(-18px, 20px); opacity: 1; }
-    100% { transform: translate(-22px, 40px); opacity: 0; }
+    50% { transform: translate(16px, -14px); opacity: 1; }
+    100% { transform: translate(28px, -20px); opacity: 0; }
   }
-  @keyframes zipExit {
-    0% { transform: translateY(0); opacity: 0.8; }
-    100% { transform: translateY(40px); opacity: 0; }
+  @keyframes flowExit {
+    0% { transform: translateX(0); opacity: 0.7; }
+    100% { transform: translateX(30px); opacity: 0; }
   }
 
-  /* Backup indicators */
+  /* Backup indicators — vertical bar on the left */
   .backup-indicator {
     position: absolute;
-    right: 6px;
-    top: 8px; bottom: 46%;
+    left: 4px;
     width: 4px;
     z-index: 10;
     border-radius: 2px;
   }
   .bad-panel .backup-indicator {
-    background: linear-gradient(to bottom, var(--red), var(--red));
+    top: 50%; bottom: 6px;
+    background: var(--red);
     opacity: 0.8;
-    animation: backupPulseBad 2s ease-in-out infinite;
+    animation: backupPulse 2s ease-in-out infinite;
   }
   .good-panel .backup-indicator {
-    bottom: 66%;
-    background: linear-gradient(to bottom, var(--green), var(--green));
+    top: 50%; bottom: 30%;
+    background: var(--green);
     opacity: 0.6;
-    animation: backupPulseGood 2s ease-in-out infinite;
+    animation: backupPulse 2s ease-in-out infinite;
   }
-  @keyframes backupPulseBad {
-    0%, 100% { opacity: 0.6; } 50% { opacity: 0.9; }
-  }
-  @keyframes backupPulseGood {
-    0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; }
+  @keyframes backupPulse {
+    0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; }
   }
 
   .backup-label {
     position: absolute;
-    right: 14px;
+    left: 12px;
     font-family: var(--font-mono);
-    font-size: 0.55rem;
+    font-size: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     writing-mode: vertical-rl;
     text-orientation: mixed;
     z-index: 10;
-    padding: 0.2rem;
+    padding: 0.15rem 0.2rem;
     border-radius: 2px;
   }
   .bad-panel .backup-label {
-    top: 8px;
+    bottom: 8px;
     color: white;
     background: var(--red);
   }
   .good-panel .backup-label {
-    top: 8px;
+    bottom: 30%;
     color: white;
     background: var(--green);
   }
@@ -1119,24 +1129,24 @@
           <span class="sim-verdict">Early merge</span>
         </div>
         <div class="sim-road">
+          <div class="lane-closed"></div>
           <div class="backup-indicator"></div>
           <div class="backup-label">Long backup</div>
+          <div class="unused-label">Unused road</div>
 
-          <!-- Left lane - packed -->
-          <div class="car blue car-b1"></div>
-          <div class="car teal car-b2"></div>
-          <div class="car orange car-b3"></div>
-          <div class="car purple car-b4"></div>
-          <div class="car pink car-b5"></div>
-          <div class="car yellow car-b6"></div>
-          <div class="car blue car-b7"></div>
+          <!-- Bottom lane — packed bumper-to-bumper -->
+          <div class="car red car-b1"></div>
+          <div class="car darkred car-b2"></div>
+          <div class="car crimson car-b3"></div>
+          <div class="car salmon car-b4"></div>
+          <div class="car red car-b5"></div>
+          <div class="car orange car-b6"></div>
+          <div class="car amber car-b7"></div>
 
-          <!-- Right lane - sparse, forcing in -->
-          <div class="car orange car-r1"></div>
-          <div class="car purple car-r2"></div>
+          <!-- Top lane — nearly empty (merged over too early) -->
+          <div class="car darkred car-t1"></div>
 
-          <div class="sim-curb"></div>
-          <div class="sim-merge-marker">▼ Merge point</div>
+          <div class="sim-merge-marker">◀ Merge</div>
         </div>
         <div class="sim-stats">
           <div class="sim-stat"><strong>1 lane used</strong>Long before merge</div>
@@ -1152,24 +1162,25 @@
           <span class="sim-verdict">Both lanes → take turns</span>
         </div>
         <div class="sim-road">
+          <div class="lane-closed"></div>
           <div class="backup-indicator"></div>
           <div class="backup-label">Short backup</div>
 
-          <!-- Left lane - evenly spaced -->
-          <div class="car blue car-l1"></div>
-          <div class="car orange car-l2"></div>
-          <div class="car pink car-l3"></div>
+          <!-- Top lane — evenly spaced -->
+          <div class="car blue car-t1"></div>
+          <div class="car darkblue car-t2"></div>
+          <div class="car sky car-t3"></div>
 
-          <!-- Right lane - evenly spaced -->
-          <div class="car teal car-r1"></div>
-          <div class="car purple car-r2"></div>
-          <div class="car yellow car-r3"></div>
+          <!-- Bottom lane — evenly spaced -->
+          <div class="car teal car-b1"></div>
+          <div class="car indigo car-b2"></div>
+          <div class="car green car-b3"></div>
 
-          <!-- Merged -->
+          <!-- Merged — single file exiting right -->
           <div class="car blue car-m1"></div>
+          <div class="car teal car-m2"></div>
 
-          <div class="sim-curb"></div>
-          <div class="sim-merge-marker">▼ Merge point</div>
+          <div class="sim-merge-marker">◀ Merge</div>
         </div>
         <div class="sim-stats">
           <div class="sim-stat"><strong>Both lanes used</strong>All the way to merge</div>
